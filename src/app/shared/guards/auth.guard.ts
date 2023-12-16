@@ -1,31 +1,20 @@
 import { inject } from "@angular/core";
 import { CanActivateFn, Router } from '@angular/router';
-import { UserService } from "@app/shared/services/user.service";
-import { map, of } from "rxjs";
+import { AuthService } from "@app/shared/services/auth.service";
 
-export const authGuard = ((_, state) => {
-    const email = localStorage.getItem('email');
-
+export const authGuard: CanActivateFn = (_, state) => {
+    const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (!email) return of(createLoginTree(router, state));
+    const user = authService.currentUser;
 
-    return inject(UserService)
-        .getUsers()
-        .pipe(
-            map(users => users.find(user => user.email === email)),
-            map(user => {
-                if (user) return true;
+    if (user() !== null) {
+        return true;
+    }
 
-                localStorage.removeItem('email');
-                return createLoginTree(router, state);
-            })
-        );
-}) satisfies CanActivateFn;
-
-const createLoginTree = (router: Router, state: any) =>
-    router.createUrlTree(['/login'], {
+    return router.createUrlTree(['/login'], {
         queryParams: {
             redirect: state.url
         }
     });
+};

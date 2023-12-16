@@ -5,13 +5,27 @@
     >
         User Management
     </a>
-    <button
-        mat-stroked-button
-        color="warn"
-        (click)="handleLogout()"
-    >
-        Logout
-    </button>
+    @if (authService.currentUser(); as user) {
+        <div class="user-info">
+            <img
+                [ngSrc]="'https://robohash.org/' + user.id"
+                [alt]="'User ' + user.id + '\'s avatar'"
+                [matTooltip]="user.name"
+                class="avatar"
+                width="36"
+                height="36"
+                loading="lazy"
+            />
+
+            <button
+                mat-stroked-button
+                color="warn"
+                (click)="handleLogout()"
+            >
+                Logout
+            </button>
+        </div>
+    }
 </mat-toolbar>
 <main>
     <router-outlet />

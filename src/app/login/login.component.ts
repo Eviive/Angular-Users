@@ -4,8 +4,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
+import { AuthService } from "@app/shared/services/auth.service";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
 
 @Component({
@@ -25,27 +25,32 @@ import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
 export class LoginComponent {
 
     private readonly router = inject(Router);
-    private readonly snackbar = inject(MatSnackBar);
+    private readonly authService = inject(AuthService);
 
     @Input()
     private redirect?: string;
+
+    isLoading = false;
 
     readonly matcher = errorStateMatcher;
 
     emailForm = new FormControl('', [Validators.required, Validators.email]);
 
-    async handleLogin() {
+    handleLogin() {
         if (this.emailForm.invalid || this.emailForm.value === null) return;
 
-        localStorage.setItem('email', this.emailForm.value);
-
-        const success = await this.router.navigate([this.redirect ?? '/']);
-
-        if (success) return;
-
-        this.snackbar.open('Login failed: unknown email address', undefined, {
-            duration: 5000
-        });
+        this.isLoading = true;
+        this.authService
+            .login(this.emailForm.value)
+            .subscribe({
+                next: () => {
+                    this.router
+                        .navigate([this.redirect ?? '/'])
+                        .catch(console.error);
+                },
+                error: () => this.isLoading = false,
+                complete: () => this.isLoading = false
+            });
     }
 
 }

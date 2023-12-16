@@ -8,9 +8,15 @@
     </mat-form-field>
     <button
         mat-stroked-button
-        color="primary"
         type="submit"
+        color="primary"
+        class="action-btn"
     >
-        Login
+        <div class="btn-content">
+            @if (isLoading) {
+                <mat-spinner [diameter]="20" />
+            }
+            Login
+        </div>
     </button>
 </form>

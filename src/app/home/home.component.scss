@@ -1,5 +1,18 @@
 .mat-toolbar {
     justify-content: space-between;
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+
+        .avatar {
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px #ccc;
+        }
+    }
 }
 
 main {

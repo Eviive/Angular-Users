@@ -17,4 +17,14 @@ form {
     mat-form-field, button {
         width: 100%;
     }
+
+    .action-btn {
+        margin: 0 0.5em;
+
+        .btn-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+    }
 }

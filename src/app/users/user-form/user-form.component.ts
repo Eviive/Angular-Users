@@ -47,7 +47,7 @@ export class UserFormComponent extends Destroyed implements OnInit {
 
     async ngOnInit(): Promise<void> {
         if (this.user === null) {
-            await this.router.navigate([ ".." ], {
+            await this.router.navigate(['..'], {
                 relativeTo: this.activatedRoute
             });
             return;
@@ -63,7 +63,7 @@ export class UserFormComponent extends Destroyed implements OnInit {
     }
 
     handleSubmit(): void {
-        if (!this.userForm || !this.userForm.dirty || this.userForm.invalid) return;
+        if (!this.userForm?.dirty || this.userForm.invalid) return;
 
         this.isLoading = true;
 
@@ -74,11 +74,13 @@ export class UserFormComponent extends Destroyed implements OnInit {
         submission
             .pipe(this.untilDestroyed())
             .subscribe({
-                next: async user => {
+                next: user => {
                     if (this.user) {
                         Object.assign(this.user, user);
                     }
-                    await this.router.navigate([user.id]);
+                    this.router
+                        .navigate([user.id])
+                        .catch(console.error);
                 },
                 error: () => this.isLoading = false,
                 complete: () => this.isLoading = false

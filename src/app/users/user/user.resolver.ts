@@ -6,7 +6,7 @@ import { catchError, of } from "rxjs";
 
 export const userResolver: ResolveFn<User | null> = (route) =>
     inject(UserService)
-        .getUser(route.params["id"])
+        .getUser(route.params['id'])
         .pipe(
             catchError(() => of(null))
         );

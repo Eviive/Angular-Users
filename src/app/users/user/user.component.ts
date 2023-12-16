@@ -41,7 +41,11 @@ export class UserComponent extends Destroyed {
             .deleteUser(user)
             .pipe(this.untilDestroyed())
             .subscribe({
-                next: () => this.router.navigate([ "/" ]),
+                next: () => {
+                    this.router
+                        .navigate(['/'])
+                        .catch(console.error);
+                },
                 error: () => this.isLoading = false,
                 complete: () => this.isLoading = false
             });

@@ -1,19 +1,16 @@
 import { inject } from "@angular/core";
 import { CanActivateFn, Router } from '@angular/router';
-import { authGuard } from "@app/shared/guards/auth.guard";
-import { map } from "rxjs";
+import { AuthService } from "@app/shared/services/auth.service";
 
-export const loginGuard = ((route, state) => {
-    const authGuardResult = authGuard(route, state);
-
+export const loginGuard: CanActivateFn = route => {
+    const authService = inject(AuthService);
     const router = inject(Router);
 
-    return authGuardResult
-        .pipe(
-            map(result => {
-                if (result !== true) return true;
+    const user = authService.currentUser;
 
-                return router.createUrlTree(['/']);
-            })
-        );
-}) satisfies CanActivateFn;
+    if (user() === null) {
+        return true;
+    }
+
+    return router.createUrlTree([route.queryParamMap.get('redirect') ?? '/']);
+};
