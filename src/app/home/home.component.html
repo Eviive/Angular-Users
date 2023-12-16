@@ -1,0 +1,18 @@
+<mat-toolbar>
+    <a
+        mat-stroked-button
+        routerLink="/"
+    >
+        User Management
+    </a>
+    <button
+        mat-stroked-button
+        color="warn"
+        (click)="handleLogout()"
+    >
+        Logout
+    </button>
+</mat-toolbar>
+<main>
+    <router-outlet />
+</main>

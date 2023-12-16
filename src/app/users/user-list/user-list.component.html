@@ -1,0 +1,36 @@
+<app-user-search-bar (searchBar)="filterUsers($event)" />
+
+<a
+    mat-stroked-button
+    color="primary"
+    routerLink="new"
+>
+    Add a new user
+</a>
+
+<mat-card>
+    <mat-card-content>
+        <mat-list>
+            @for (user of displayedUsers; track user.id) {
+                <mat-list-item>
+                    <app-user-item [user]="user"></app-user-item>
+                </mat-list-item>
+            } @empty {
+                <mat-list-item>
+                    No users
+                </mat-list-item>
+            }
+        </mat-list>
+    </mat-card-content>
+    <mat-divider />
+    <mat-card-footer>
+        <mat-paginator
+            [pageIndex]="page.index"
+            [pageSize]="page.size"
+            [pageSizeOptions]="pageSizeOptions"
+            [length]="page.length"
+            [disabled]="page.disabled"
+            (page)="handlePageEvent($event)"
+        />
+    </mat-card-footer>
+</mat-card>

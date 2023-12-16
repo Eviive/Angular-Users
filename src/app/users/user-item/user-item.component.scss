@@ -1,0 +1,18 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .left {
+        display: flex;
+        align-items: center;
+        gap: 0.75em;
+
+        img {
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px #ccc;
+        }
+    }
+}

@@ -1,0 +1,48 @@
+@if (user) {
+    <mat-card class="card">
+        <mat-card-header class="card-header">
+            <img
+                mat-card-avatar
+                [ngSrc]="'https://robohash.org/' + user.id"
+                [alt]="'User ' + user.id + '\'s avatar'"
+                class="avatar"
+                [ngStyle]="{ viewTransitionName: 'avatar-' + user.id }"
+                width="75"
+                height="75"
+                loading="lazy"
+            />
+            <mat-card-title>{{ user.name }} <small>({{ user.occupation }})</small></mat-card-title>
+            <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+            {{ user.bio }}
+        </mat-card-content>
+        <mat-card-actions [align]="'end'">
+            <a
+                mat-stroked-button
+                color="primary"
+                class="action-btn"
+                routerLink="edit"
+            >
+                Edit
+            </a>
+            <button
+                mat-stroked-button
+                color="warn"
+                class="action-btn"
+                (click)="handleDelete(user)"
+            >
+                <div class="btn-content">
+                    @if (isLoading) {
+                        <mat-spinner [diameter]="20" />
+                    }
+                    Delete
+                </div>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+} @else {
+    <div>
+        <strong>Oh snap!</strong> There is no user with that ID.
+    </div>
+}

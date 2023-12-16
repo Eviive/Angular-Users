@@ -1,0 +1,24 @@
+<div class="wrapper">
+    <div class="left">
+        <img
+            matListItemAvatar
+            [ngSrc]="'https://robohash.org/' + user.id"
+            [alt]="'User ' + user.id + '\'s avatar'"
+            [ngStyle]="{ viewTransitionName: 'avatar-' + user.id }"
+            width="45"
+            height="45"
+            loading="lazy"
+        />
+        <div>
+            <span matListItemTitle>{{ user.name }}</span>
+            <small matListItemLine>{{ user.email }}</small>
+        </div>
+    </div>
+    <a
+        mat-stroked-button
+        color="primary"
+        [routerLink]="user.id.toString()"
+    >
+        See more
+    </a>
+</div>

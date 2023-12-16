@@ -1,0 +1,16 @@
+<form (ngSubmit)="handleLogin()">
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput [formControl]="emailForm" [errorStateMatcher]="matcher" />
+        @if (emailForm.hasError('email') && !emailForm.hasError('required')) {
+            <mat-error>Please enter a valid email address</mat-error>
+        }
+    </mat-form-field>
+    <button
+        mat-stroked-button
+        color="primary"
+        type="submit"
+    >
+        Login
+    </button>
+</form>

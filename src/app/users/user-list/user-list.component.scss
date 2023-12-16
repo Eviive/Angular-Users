@@ -1,0 +1,20 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+mat-list-item.mat-mdc-list-item {
+    margin: 0.75em 0;
+    overflow: visible;
+
+    ::ng-deep > .mdc-list-item__content {
+        overflow: visible;
+    }
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
