@@ -1,12 +1,13 @@
 import { NgOptimizedImage, NgStyle } from "@angular/common";
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, NgForm, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
 import { UserService } from "@app/shared/services/user.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
@@ -26,7 +27,8 @@ import { User } from "@app/users/user.model";
         MatProgressSpinnerModule,
         RouterLink,
         NgOptimizedImage,
-        NgStyle
+        NgStyle,
+        AutoFocusDirective
     ]
 })
 export class UserFormComponent extends Destroyed implements OnInit {
@@ -35,6 +37,9 @@ export class UserFormComponent extends Destroyed implements OnInit {
     private readonly userService = inject(UserService);
     private readonly router = inject(Router);
     private readonly activatedRoute = inject(ActivatedRoute);
+
+    @ViewChild('form')
+    form!: NgForm;
 
     @Input()
     user?: User | null;
@@ -63,7 +68,14 @@ export class UserFormComponent extends Destroyed implements OnInit {
     }
 
     handleSubmit(): void {
-        if (!this.userForm?.dirty || this.userForm.invalid) return;
+        if (!this.userForm || this.userForm.invalid) return;
+
+        if (this.user && this.userForm.pristine) {
+            this.router
+                .navigate([this.user.id])
+                .catch(console.error);
+            return;
+        }
 
         this.isLoading = true;
 

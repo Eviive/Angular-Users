@@ -1,7 +1,7 @@
 <form (ngSubmit)="handleLogin()">
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input type="email" matInput [formControl]="emailForm" [errorStateMatcher]="matcher" />
+        <input type="email" matInput [formControl]="emailForm" [errorStateMatcher]="matcher" appAutoFocus />
         @if (emailForm.hasError('email') && !emailForm.hasError('required')) {
             <mat-error>Please enter a valid email address</mat-error>
         }

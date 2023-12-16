@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
+import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
 import { Filter } from "@app/shared/types/app";
 import { isNotNullOrUndefined } from "@app/shared/utils/assertion";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
@@ -19,7 +20,8 @@ import { debounceTime, distinctUntilChanged, filter, fromEvent, map } from "rxjs
         MatSelectModule,
         ReactiveFormsModule,
         MatInputModule,
-        FormsModule
+        FormsModule,
+        AutoFocusDirective
     ]
 })
 export class UserSearchBarComponent extends Destroyed implements AfterViewInit {

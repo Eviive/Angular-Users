@@ -2,7 +2,7 @@ import { CanDeactivateFn } from "@angular/router";
 import { UserFormComponent } from "@app/users/user-form/user-form.component";
 
 export const formGuard: CanDeactivateFn<UserFormComponent> = component => {
-    if (!component.userForm?.dirty) {
+    if (!component.userForm?.dirty || component.form.submitted) {
         return true;
     }
 

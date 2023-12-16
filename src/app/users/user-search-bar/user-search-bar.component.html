@@ -1,7 +1,7 @@
 <div class="search-bar">
     <mat-form-field appearance="outline">
         <mat-label>Search</mat-label>
-        <input #searchBarInput matInput [type]="selectedKey === 'id' ? 'number' : 'text'">
+        <input #searchBarInput matInput [type]="selectedKey === 'id' ? 'number' : 'text'" appAutoFocus />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Search By</mat-label>

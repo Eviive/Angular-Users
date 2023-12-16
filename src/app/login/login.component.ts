@@ -5,6 +5,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Router } from "@angular/router";
+import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
 import { AuthService } from "@app/shared/services/auth.service";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
 
@@ -19,7 +20,8 @@ import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
         ReactiveFormsModule,
         FormsModule,
         MatButtonModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        AutoFocusDirective
     ]
 })
 export class LoginComponent {
@@ -40,6 +42,7 @@ export class LoginComponent {
         if (this.emailForm.invalid || this.emailForm.value === null) return;
 
         this.isLoading = true;
+
         this.authService
             .login(this.emailForm.value)
             .subscribe({
