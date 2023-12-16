@@ -5,7 +5,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Search By</mat-label>
-        <mat-select [(ngModel)]="selectedKey" (ngModelChange)="handleCriteriaChange($event)">
+        <mat-select [(ngModel)]="selectedKey" (ngModelChange)="handleCriteriaChange()">
             <mat-option value="id">ID</mat-option>
             <mat-option value="name">Name</mat-option>
             <mat-option value="occupation">Occupation</mat-option>

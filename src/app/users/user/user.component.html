@@ -2,7 +2,7 @@
     <mat-card class="card">
         <mat-card-header class="card-header">
             <img
-                mat-card-avatar
+                matCardAvatar
                 [ngSrc]="'https://robohash.org/' + user.id"
                 [alt]="'User ' + user.id + '\'s avatar'"
                 class="avatar"
@@ -11,11 +11,22 @@
                 height="75"
                 loading="lazy"
             />
-            <mat-card-title>{{ user.name }} <small>({{ user.occupation }})</small></mat-card-title>
+            <mat-card-title class="card-title">
+                {{ user.name }}
+                <app-user-chip [isCurrentUser]="isCurrentUser()" />
+            </mat-card-title>
             <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="card-content">
-            {{ user.bio }}
+            <div>
+                <strong>Occupation:</strong>
+                {{ user.occupation }}
+            </div>
+
+            <div>
+                <strong>Biography:</strong>
+                {{ user.bio }}
+            </div>
         </mat-card-content>
         <mat-card-actions [align]="'end'">
             <a
@@ -26,19 +37,25 @@
             >
                 Edit
             </a>
-            <button
-                mat-stroked-button
-                color="warn"
-                class="action-btn"
-                (click)="handleDelete(user)"
+            <div
+                [matTooltip]="isCurrentUser() ? 'You cannot delete yourself' : ''"
+                [matTooltipDisabled]="!isCurrentUser()"
             >
-                <div class="btn-content">
-                    @if (isLoading) {
-                        <mat-spinner [diameter]="20" />
-                    }
-                    Delete
-                </div>
-            </button>
+                <button
+                    mat-stroked-button
+                    color="warn"
+                    class="action-btn"
+                    (click)="handleDelete(user)"
+                    [disabled]="isCurrentUser()"
+                >
+                    <div class="btn-content">
+                        @if (isLoading) {
+                            <mat-spinner [diameter]="20" />
+                        }
+                        Delete
+                    </div>
+                </button>
+            </div>
         </mat-card-actions>
     </mat-card>
 } @else {

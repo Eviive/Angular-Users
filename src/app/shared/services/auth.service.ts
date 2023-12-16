@@ -63,4 +63,12 @@ export class AuthService {
         );
     }
 
+    isCurrentUser(user?: User | null): boolean {
+        const currentUser = this.currentUser();
+
+        if (!user || !currentUser) return false;
+
+        return user.id === currentUser.id;
+    }
+
 }

@@ -14,5 +14,11 @@
             border: 1px solid #ccc;
             box-shadow: 0 0 5px #ccc;
         }
+
+        .name {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
     }
 }

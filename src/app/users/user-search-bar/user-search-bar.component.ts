@@ -69,7 +69,7 @@ export class UserSearchBarComponent extends Destroyed implements AfterViewInit {
             });
     }
 
-    handleCriteriaChange(key: keyof User) {
+    handleCriteriaChange() {
         this.searchBarInput.nativeElement.value = '';
         this.filterChange.emit(null);
     }

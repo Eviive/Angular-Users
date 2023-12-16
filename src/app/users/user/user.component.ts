@@ -1,12 +1,18 @@
 import { NgOptimizedImage, NgStyle } from "@angular/common";
-import { Component, inject, Input } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatDialog } from "@angular/material/dialog";
 import { MatListModule } from "@angular/material/list";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { Router, RouterLink } from "@angular/router";
+import { AuthService } from "@app/shared/services/auth.service";
 import { UserService } from "@app/shared/services/user.service";
+import { ConfirmDialogComponent, ConfirmDialogData } from "@app/shared/ui/confirm-dialog/confirm-dialog.component";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
+import { UserChipComponent } from "@app/users/user-chip/user-chip.component";
 import { User } from "@app/users/user.model";
 
 @Component({
@@ -21,20 +27,44 @@ import { User } from "@app/users/user.model";
         MatProgressSpinnerModule,
         MatListModule,
         NgOptimizedImage,
-        NgStyle
+        NgStyle,
+        MatTooltipModule,
+        MatChipsModule,
+        UserChipComponent
     ]
 })
 export class UserComponent extends Destroyed {
 
     private readonly userService = inject(UserService);
+    private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
+    private readonly dialog = inject(MatDialog);
 
     @Input({ required: true })
     user!: User | null;
 
+    isCurrentUser = computed(() => this.authService.isCurrentUser(this.user));
+
     isLoading = false;
 
     handleDelete(user: User): void {
+        if (this.isCurrentUser()) return;
+
+        this.dialog
+            .open<ConfirmDialogComponent, ConfirmDialogData, boolean>(ConfirmDialogComponent, {
+                data: {
+                    title: 'Delete user',
+                    message: `Are you sure you want to delete ${user.name}?`,
+                    confirmText: 'Delete',
+                    confirmWarn: true,
+                    cancelText: 'Cancel'
+                }
+            })
+            .afterClosed()
+            .subscribe(confirmed => confirmed && this.deleteUser(user));
+    }
+
+    private deleteUser(user: User): void {
         this.isLoading = true;
 
         this.userService

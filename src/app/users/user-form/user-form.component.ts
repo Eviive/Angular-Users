@@ -1,5 +1,5 @@
 import { NgOptimizedImage, NgStyle } from "@angular/common";
-import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -8,9 +8,11 @@ import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
+import { AuthService } from "@app/shared/services/auth.service";
 import { UserService } from "@app/shared/services/user.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
+import { UserChipComponent } from "@app/users/user-chip/user-chip.component";
 import { User } from "@app/users/user.model";
 
 @Component({
@@ -28,7 +30,8 @@ import { User } from "@app/users/user.model";
         RouterLink,
         NgOptimizedImage,
         NgStyle,
-        AutoFocusDirective
+        AutoFocusDirective,
+        UserChipComponent
     ]
 })
 export class UserFormComponent extends Destroyed implements OnInit {
@@ -37,12 +40,15 @@ export class UserFormComponent extends Destroyed implements OnInit {
     private readonly userService = inject(UserService);
     private readonly router = inject(Router);
     private readonly activatedRoute = inject(ActivatedRoute);
+    private readonly authService = inject(AuthService);
 
     @ViewChild('form')
     form!: NgForm;
 
     @Input()
     user?: User | null;
+
+    isCurrentUser = computed(() => this.authService.isCurrentUser(this.user));
 
     userForm: FormGroup<{ [key in keyof User]: FormControl<User[key] | null> }> | null = null;
 

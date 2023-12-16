@@ -10,7 +10,10 @@
             loading="lazy"
         />
         <div>
-            <span matListItemTitle>{{ user.name }}</span>
+            <span matListItemTitle class="name">
+                {{ user.name }}
+                <app-user-chip [isCurrentUser]="isCurrentUser()" />
+            </span>
             <small matListItemLine>{{ user.email }}</small>
         </div>
     </div>

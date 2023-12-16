@@ -1,0 +1,21 @@
+<h1 matDialogTitle>
+    {{ data.title ?? 'Confirm' }}
+</h1>
+<div matDialogContent>
+    {{ data.message ?? 'Are you sure you want to do this?' }}
+</div>
+<div matDialogActions align="end">
+    <button
+        mat-stroked-button
+        (click)="handleCancel()"
+    >
+        {{ data.cancelText ?? 'Cancel' }}
+    </button>
+    <button
+        mat-stroked-button
+        [color]="data.confirmWarn ? 'warn' : undefined"
+        [matDialogClose]="true"
+    >
+        {{ data.confirmText ?? 'Confirm' }}
+    </button>
+</div>

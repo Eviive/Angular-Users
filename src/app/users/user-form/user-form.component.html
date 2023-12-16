@@ -4,7 +4,7 @@
             <mat-card-header class="form-header">
                 @if (user) {
                     <img
-                        mat-card-avatar
+                        matCardAvatar
                         [ngSrc]="'https://robohash.org/' + user.id"
                         [alt]="'User ' + user.id + '\'s avatar'"
                         class="avatar"
@@ -14,7 +14,14 @@
                         loading="lazy"
                     />
                 }
-                <mat-card-title>{{ user ? 'Editing ' + user.name : 'Adding a new user' }}</mat-card-title>
+                <mat-card-title class="form-title">
+                    @if (user) {
+                        Editing {{ user.name }}
+                        <app-user-chip [isCurrentUser]="isCurrentUser()" />
+                    } @else {
+                        Adding a new user
+                    }
+                </mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div class="form-content">

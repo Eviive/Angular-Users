@@ -17,7 +17,11 @@
                 </mat-list-item>
             } @empty {
                 <mat-list-item>
-                    {{ filter !== null ? 'No users matching' : 'No users' }}
+                    @if (filter !== null) {
+                        No users matching
+                    } @else {
+                        No users
+                    }
                 </mat-list-item>
             }
         </mat-list>
