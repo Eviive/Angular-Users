@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -29,8 +29,11 @@ export class UserSearchBarComponent extends Destroyed implements AfterViewInit {
     @ViewChild('searchBarInput')
     readonly searchBarInput!: ElementRef<HTMLInputElement>;
 
+    @Input()
+    filter: Filter<User> | null = null;
+
     @Output()
-    readonly searchBar = new EventEmitter<Filter<User>>();
+    readonly filterChange = new EventEmitter<Filter<User> | null>();
 
     selectedKey: keyof User = 'email';
 
@@ -54,20 +57,21 @@ export class UserSearchBarComponent extends Destroyed implements AfterViewInit {
                 debounceTime(300),
                 distinctUntilChanged()
             )
-            .subscribe(value =>
-                this.searchBar.emit({
-                    key: this.selectedKey,
-                    value: value
-                })
-            );
+            .subscribe(value => {
+                const hasValue = typeof value === 'string' ? value !== '' : !isNaN(value);
+                const emitValue: Filter<User> | null = hasValue
+                    ? {
+                        key: this.selectedKey,
+                        value: value
+                    }
+                    : null;
+                this.filterChange.emit(emitValue);
+            });
     }
 
     handleCriteriaChange(key: keyof User) {
         this.searchBarInput.nativeElement.value = '';
-        this.searchBar.emit({
-            key: key,
-            value: ''
-        });
+        this.filterChange.emit(null);
     }
 
 }

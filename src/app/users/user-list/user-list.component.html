@@ -1,4 +1,4 @@
-<app-user-search-bar (searchBar)="filterUsers($event)" />
+<app-user-search-bar [(filter)]="filter" (filterChange)="updateDisplayedUsers()" />
 
 <a
     mat-stroked-button
@@ -17,7 +17,7 @@
                 </mat-list-item>
             } @empty {
                 <mat-list-item>
-                    No users
+                    {{ filter !== null ? 'No users matching' : 'No users' }}
                 </mat-list-item>
             }
         </mat-list>
@@ -29,8 +29,7 @@
             [pageSize]="page.size"
             [pageSizeOptions]="pageSizeOptions"
             [length]="page.length"
-            [disabled]="page.disabled"
-            (page)="handlePageEvent($event)"
+            (page)="handlePageChange($event)"
         />
     </mat-card-footer>
 </mat-card>

@@ -18,3 +18,7 @@ mat-list-item.mat-mdc-list-item {
     justify-content: space-between;
     align-items: center;
 }
+
+mat-card-footer, mat-paginator {
+    border-radius: inherit;
+}

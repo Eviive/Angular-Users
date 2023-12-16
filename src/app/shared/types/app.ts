@@ -12,5 +12,4 @@ export type Page = {
     index: number;
     size: number;
     length: number;
-    disabled: boolean;
 };

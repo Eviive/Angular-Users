@@ -34,73 +34,54 @@ export class UserListComponent implements OnChanges {
     page: Page = {
         index: 0,
         size: 10,
-        length: 0,
-        disabled: false
+        length: 0
     };
     readonly pageSizeOptions = [5, 10, 25] as const;
 
-    ngOnChanges(changes: SimpleChanges): void {
-        const change = changes['users'];
+    filter: Filter<User> | null = null;
 
-        if (
-            change === undefined ||
-            change.previousValue !== undefined ||
-            !change.currentValue ||
-            this.displayedUsers !== null
-        ) return;
-
-        this.page.length = this.users.length;
-        this.handlePageEvent({
-            pageIndex: this.page.index,
-            pageSize: this.page.size,
-            length: this.users.length
-        });
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['users']) {
+            this.updateDisplayedUsers();
+        }
     }
 
-    filterUsers(filter: Filter<User>) {
+    handlePageChange(page: PageEvent) {
+        this.page = {
+            ...this.page,
+            index: page.pageIndex,
+            size: page.pageSize
+        };
+
+        this.updateDisplayedUsers();
+    }
+
+    updateDisplayedUsers(): void {
+        let users = this.users;
+
+        if (this.filter !== null) {
+            users = this.filterUsers(users, this.filter);
+        }
+
+        this.page.length = users.length;
+
+        users = users.slice(this.page.index * this.page.size, (this.page.index + 1) * this.page.size);
+
+        this.displayedUsers = users;
+    }
+
+    private filterUsers(users: User[], filter: Filter<User>): User[] {
         const filterValue = filter.value;
-        const filteredUsers = this.users.filter(user => {
+
+        return users.filter(user => {
             const userValue = user[filter.key].toString().toLowerCase();
 
-            if (filterValue === '') {
-                this.page.disabled = false;
-                return true;
-            }
+            const isNumberColumn = filter.key === 'id' && typeof filterValue === 'number';
 
-            this.page.disabled = true;
-
-            return filter.key === 'id' && typeof filterValue === 'number'
+            return isNumberColumn
                 ? filterValue === Number(userValue)
                 : userValue.includes(filterValue.toString().toLowerCase());
         });
-        if (filterValue !== '') {
-            this.page = {
-                index: 0,
-                size: filteredUsers.length,
-                length: filteredUsers.length,
-                disabled: true
-            };
-        } else {
-            this.page = {
-                index: 0,
-                size: 10,
-                length: this.users.length,
-                disabled: false
-            };
-        }
-        this.displayedUsers = filteredUsers;
-    }
-
-    handlePageEvent(e: PageEvent) {
-        this.page = {
-            ...this.page,
-            index: e.pageIndex,
-            size: e.pageSize
-        };
-        this.displayedUsers = this.users.slice(
-            this.page.index * this.page.size,
-            this.page.index * this.page.size + this.page.size
-        );
     }
 
 }
