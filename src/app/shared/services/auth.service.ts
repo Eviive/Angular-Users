@@ -39,15 +39,17 @@ export class AuthService {
                     this._currentUser.set(user);
                     return true;
                 }),
-                tap(success =>
+                tap(success => {
+                    if (success) return;
+
                     this.snackbar.open(
-                        success ? 'Login successful' : 'Login failed',
+                        'Login failed: user not found',
                         undefined,
                         {
                             duration: 5000
                         }
                     )
-                )
+                })
             );
     }
 
