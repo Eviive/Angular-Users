@@ -76,10 +76,8 @@ export class UserListComponent implements OnChanges {
         return users.filter(user => {
             const userValue = user[filter.key].toString().toLowerCase();
 
-            const isNumberColumn = filter.key === 'id' && typeof filterValue === 'number';
-
-            return isNumberColumn
-                ? filterValue === Number(userValue)
+            return filter.key === 'id'
+                ? filterValue === userValue
                 : userValue.includes(filterValue.toString().toLowerCase());
         });
     }

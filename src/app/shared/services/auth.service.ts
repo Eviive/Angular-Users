@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { LoginForm } from "@app/login/login.component";
 import { UserService } from "@app/shared/services/user.service";
 import { User } from "@app/users/user.model";
 import { map, Observable, tap } from "rxjs";
@@ -24,11 +25,14 @@ export class AuthService {
         this._currentUser.set(user);
     }
 
-    login(email: string): Observable<boolean> {
+    login(loginForm: LoginForm): Observable<boolean> {
         return this.userService
             .getUsers()
             .pipe(
-                map(users => users.find(user => user.email === email)),
+                map(users => users.find(user =>
+                    user.email === loginForm.email &&
+                    user.password === loginForm.password
+                )),
                 map(user => {
                     if (!user) {
                         localStorage.removeItem('user');

@@ -1,22 +1,28 @@
-<form (ngSubmit)="handleLogin()">
-    <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput [formControl]="emailForm" [errorStateMatcher]="matcher" appAutoFocus />
-        @if (emailForm.hasError('email') && !emailForm.hasError('required')) {
-            <mat-error>Please enter a valid email address</mat-error>
-        }
-    </mat-form-field>
-    <button
-        mat-stroked-button
-        type="submit"
-        color="primary"
-        class="action-btn"
-    >
-        <div class="btn-content">
-            @if (isLoading) {
-                <mat-spinner [diameter]="20" />
+@if (emailForm) {
+    <form [formGroup]="emailForm" (ngSubmit)="handleLogin()">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher" appAutoFocus />
+            @if (emailForm.get('email')?.hasError('email') && !emailForm.get('email')?.hasError('required')) {
+                <mat-error>Please enter a valid email address</mat-error>
             }
-            Login
-        </div>
-    </button>
-</form>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" />
+        </mat-form-field>
+        <button
+            mat-stroked-button
+            type="submit"
+            color="primary"
+            class="action-btn"
+        >
+            <div class="btn-content">
+                @if (isLoading) {
+                    <mat-spinner [diameter]="20" />
+                }
+                Login
+            </div>
+        </button>
+    </form>
+}

@@ -1,5 +1,5 @@
-import { Component, inject, Input } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -8,6 +8,11 @@ import { Router } from "@angular/router";
 import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
 import { AuthService } from "@app/shared/services/auth.service";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
+
+export type LoginForm = {
+    email: string;
+    password: string;
+};
 
 @Component({
     standalone: true,
@@ -24,10 +29,11 @@ import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
         AutoFocusDirective
     ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
+    private readonly formBuilder = inject(FormBuilder);
 
     @Input()
     private redirect?: string;
@@ -36,15 +42,22 @@ export class LoginComponent {
 
     readonly matcher = errorStateMatcher;
 
-    emailForm = new FormControl('', [Validators.required, Validators.email]);
+    emailForm: FormGroup<{ [key in keyof LoginForm]: FormControl<LoginForm[key] | null> }> | null = null;
+
+    ngOnInit() {
+        this.emailForm = this.formBuilder.group({
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required]
+        });
+    }
 
     handleLogin() {
-        if (this.emailForm.invalid || this.emailForm.value === null) return;
+        if (!this.emailForm || this.emailForm.invalid || this.emailForm.value === null) return;
 
         this.isLoading = true;
 
         this.authService
-            .login(this.emailForm.value)
+            .login(this.emailForm.value as LoginForm)
             .subscribe({
                 next: () => {
                     this.router

@@ -49,29 +49,31 @@ export class UserSearchBarComponent extends Destroyed implements AfterViewInit {
                         !(e.target instanceof HTMLInputElement)
                     ) return null;
 
-                    return this.selectedKey !== 'id'
-                        ? e.target.value
-                        : e.target.valueAsNumber;
+                    return e.target.value;
                 }),
                 filter(isNotNullOrUndefined),
                 debounceTime(300),
                 distinctUntilChanged()
             )
-            .subscribe(value => {
-                const hasValue = typeof value === 'string' ? value !== '' : !isNaN(value);
-                const emitValue: Filter<User> | null = hasValue
-                    ? {
-                        key: this.selectedKey,
-                        value: value
-                    }
-                    : null;
-                this.filterChange.emit(emitValue);
-            });
+            .subscribe(value =>
+                this.filterChange.emit(
+                    value !== ''
+                        ? {
+                            key: this.selectedKey,
+                            value: value
+                        }
+                        : null
+                )
+            );
     }
 
     handleCriteriaChange() {
-        this.searchBarInput.nativeElement.value = '';
-        this.filterChange.emit(null);
+        if (this.filter === null) return;
+
+        this.filterChange.emit({
+            key: this.selectedKey,
+            value: this.filter.value
+        });
     }
 
 }
