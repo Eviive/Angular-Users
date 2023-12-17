@@ -75,7 +75,7 @@ export class UserFormComponent extends Destroyed implements OnInit {
     }
 
     handleSubmit(): void {
-        if (!this.userForm || this.userForm.invalid) return;
+        if (this.isLoading || !this.userForm || this.userForm.invalid) return;
 
         if (this.user && this.userForm.pristine) {
             this.router

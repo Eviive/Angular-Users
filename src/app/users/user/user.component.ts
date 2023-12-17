@@ -65,6 +65,8 @@ export class UserComponent extends Destroyed {
     }
 
     private deleteUser(user: User): void {
+        if (this.isLoading) return;
+
         this.isLoading = true;
 
         this.userService

@@ -52,7 +52,12 @@ export class LoginComponent implements OnInit {
     }
 
     handleLogin() {
-        if (!this.emailForm || this.emailForm.invalid || this.emailForm.value === null) return;
+        if (
+            this.isLoading ||
+            !this.emailForm ||
+            this.emailForm.invalid ||
+            this.emailForm.value === null
+        ) return;
 
         this.isLoading = true;
 
