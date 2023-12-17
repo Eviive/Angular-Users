@@ -67,10 +67,10 @@ export class UserFormComponent extends Destroyed implements OnInit {
         this.userForm = this.formBuilder.group({
             id: this.user?.id ?? null,
             name: [this.user?.name ?? "", Validators.required],
-            occupation: [this.user?.occupation ?? "", Validators.required],
             email: [this.user?.email ?? "", [Validators.required, Validators.email]],
-            bio: [this.user?.bio ?? "", Validators.required],
-            password: [this.user?.password ?? "", Validators.required]
+            password: [this.user?.password ?? "", Validators.required],
+            occupation: [this.user?.occupation ?? "", Validators.required],
+            bio: [this.user?.bio ?? "", Validators.required]
         });
     }
 
