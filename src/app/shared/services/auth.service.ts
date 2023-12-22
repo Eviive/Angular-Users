@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { LoginForm } from "@app/login/login.component";
 import { UserService } from "@app/shared/services/user.service";
@@ -69,12 +69,14 @@ export class AuthService {
         );
     }
 
-    isCurrentUser(user?: User | null): boolean {
-        const currentUser = this.currentUser();
+    isCurrentUser(user?: User | null): Signal<boolean> {
+        return computed(() => {
+            const currentUser = this.currentUser();
 
-        if (!user || !currentUser) return false;
+            if (!user || !currentUser) return false;
 
-        return user.id === currentUser.id;
+            return user.id === currentUser.id;
+        });
     }
 
 }

@@ -1,5 +1,5 @@
 import { NgOptimizedImage, NgStyle } from "@angular/common";
-import { Component, computed, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
@@ -25,13 +25,19 @@ import { User } from "@app/users/user.model";
         UserChipComponent
     ]
 })
-export class UserItemComponent {
+export class UserItemComponent implements OnChanges {
 
     private readonly authService = inject(AuthService);
 
     @Input({ required: true })
     user!: User;
 
-    isCurrentUser = computed(() => this.authService.isCurrentUser(this.user));
+    isCurrentUser!: Signal<boolean>;
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (!changes['user']) return;
+
+        this.isCurrentUser = this.authService.isCurrentUser(this.user);
+    }
 
 }

@@ -1,5 +1,5 @@
 import { NgOptimizedImage, NgStyle } from "@angular/common";
-import { Component, computed, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, Signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -34,7 +34,7 @@ import { User } from "@app/users/user.model";
         UserChipComponent
     ]
 })
-export class UserFormComponent extends Destroyed implements OnInit {
+export class UserFormComponent extends Destroyed implements OnInit, OnChanges {
 
     private readonly formBuilder = inject(FormBuilder);
     private readonly userService = inject(UserService);
@@ -48,7 +48,7 @@ export class UserFormComponent extends Destroyed implements OnInit {
     @Input()
     user?: User | null;
 
-    isCurrentUser = computed(() => this.authService.isCurrentUser(this.user));
+    isCurrentUser!: Signal<boolean>;
 
     userForm: FormGroup<{ [key in keyof User]: FormControl<User[key] | null> }> | null = null;
 
@@ -72,6 +72,12 @@ export class UserFormComponent extends Destroyed implements OnInit {
             occupation: [this.user?.occupation ?? "", Validators.required],
             bio: [this.user?.bio ?? "", Validators.required]
         });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes['user']) return;
+
+        this.isCurrentUser = this.authService.isCurrentUser(this.user);
     }
 
     handleSubmit(): void {

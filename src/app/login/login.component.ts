@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Router } from "@angular/router";
 import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
 import { AuthService } from "@app/shared/services/auth.service";
+import { Destroyed } from "@app/shared/utils/destroyed.component";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
 
 export type LoginForm = {
@@ -29,7 +30,7 @@ export type LoginForm = {
         AutoFocusDirective
     ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends Destroyed implements OnInit {
 
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
@@ -63,6 +64,7 @@ export class LoginComponent implements OnInit {
 
         this.authService
             .login(this.emailForm.value as LoginForm)
+            .pipe(this.untilDestroyed())
             .subscribe({
                 next: () => {
                     this.router

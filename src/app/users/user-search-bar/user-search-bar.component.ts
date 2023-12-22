@@ -37,7 +37,7 @@ export class UserSearchBarComponent extends Destroyed implements AfterViewInit {
 
     selectedKey: keyof User = 'email';
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() {
         const input = this.searchBarInput.nativeElement;
 
         fromEvent(input, 'input')
