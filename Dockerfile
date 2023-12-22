@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN npm ci && \
-    npm run build --configuration=production
+    npm run build
 
 FROM nginx:stable-alpine
 
