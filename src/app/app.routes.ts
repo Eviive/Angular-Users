@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { authGuard } from "@app/shared/guards/auth.guard";
-import { formGuard } from "@app/shared/guards/form.guard";
-import { loginGuard } from "@app/shared/guards/login.guard";
+import { authGuard } from "@app/core/guards/auth.guard";
+import { formGuard } from "@app/core/guards/form.guard";
+import { loginGuard } from "@app/core/guards/login.guard";
 import { userListResolver } from "@app/users/user-list/user-list.resolver";
 import { userResolver } from "@app/users/user/user.resolver";
 

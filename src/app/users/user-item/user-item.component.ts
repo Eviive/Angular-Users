@@ -5,7 +5,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatListModule } from "@angular/material/list";
 import { RouterLink } from "@angular/router";
-import { AuthService } from "@app/shared/services/auth.service";
+import { AuthService } from "@app/core/services/auth.service";
 import { UserChipComponent } from "@app/users/user-chip/user-chip.component";
 import { User } from "@app/users/user.model";
 

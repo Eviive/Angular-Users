@@ -21,5 +21,5 @@ export const formGuard: CanDeactivateFn<UserFormComponent> = component => {
             }
         })
         .afterClosed()
-        .pipe(map(confirmed => confirmed || false));
+        .pipe(map(confirmed => confirmed ?? false));
 };

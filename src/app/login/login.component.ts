@@ -5,8 +5,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Router } from "@angular/router";
+import { AuthService } from "@app/core/services/auth.service";
 import { AutoFocusDirective } from "@app/shared/directives/auto-focus.directive";
-import { AuthService } from "@app/shared/services/auth.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
 import { errorStateMatcher } from "@app/shared/utils/error-state-matcher";
 

@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { UserService } from "@app/core/services/user.service";
 import { LoginForm } from "@app/login/login.component";
-import { UserService } from "@app/shared/services/user.service";
 import { User } from "@app/users/user.model";
 import { map, Observable, tap } from "rxjs";
 

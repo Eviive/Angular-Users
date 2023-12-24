@@ -4,7 +4,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatListModule } from "@angular/material/list";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { RouterLink } from "@angular/router";
-import { Filter, Page } from "@app/shared/types/app";
+import { Filter, Page } from "@app/core/types/app";
 import { UserItemComponent } from "@app/users/user-item/user-item.component";
 import { UserSearchBarComponent } from "@app/users/user-search-bar/user-search-bar.component";
 import { User } from "@app/users/user.model";

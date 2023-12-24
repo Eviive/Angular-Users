@@ -4,7 +4,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { Router, RouterLink, RouterOutlet } from "@angular/router";
-import { AuthService } from "@app/shared/services/auth.service";
+import { AuthService } from "@app/core/services/auth.service";
 
 @Component({
     standalone: true,
